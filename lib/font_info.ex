@@ -30,4 +30,14 @@ defmodule FontInfo do
     bytes = IO.binread(font_info.file, table.length)
     FontInfo.FontHeader.new(bytes)
   end
+
+  def hhea(font_info) do
+    table = font_info.table_record |> Enum.find fn entry ->
+      entry.tag == "hhea"
+    end
+
+    :file.position(font_info.file, table.offset)
+    bytes = IO.binread(font_info.file, table.length)
+    FontInfo.HorizontalHeader.new(bytes)
+  end
 end
